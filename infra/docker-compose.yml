@@ -8,15 +8,15 @@ services:
       POSTGRES_USER: moveo
       POSTGRES_PASSWORD: moveo_secret
       POSTGRES_DB: moveo_crypto
-    ports:
-      - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -U moveo -d moveo_crypto" ]
+      test: ["CMD-SHELL", "pg_isready -U moveo -d moveo_crypto"]
       interval: 5s
       timeout: 5s
       retries: 5
+    networks:
+      - moveo-net
 
   backend:
     build:
@@ -30,11 +30,27 @@ services:
       CRYPTOPANIC_API_KEY: ""
       OPENROUTER_API_KEY: ""
       HUGGINGFACE_API_KEY: ""
-    ports:
-      - "8000:8000"
     depends_on:
       postgres:
         condition: service_healthy
+    networks:
+      - moveo-net
+
+  frontend:
+    build:
+      context: ../frontend
+      dockerfile: Dockerfile
+    container_name: moveo-frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    networks:
+      - moveo-net
+
+networks:
+  moveo-net:
+    driver: bridge
 
 volumes:
   postgres_data:

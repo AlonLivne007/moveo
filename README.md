@@ -19,12 +19,29 @@ A personalized crypto investor dashboard. Users sign up, complete a short onboar
 
 ## Setup
 
-### Prerequisites
+### Run entire app with Docker (no manual steps)
 
-- Node.js 18+, npm
-- Python 3.11+
-- Docker & Docker Compose (for DB and optional backend)
-- PostgreSQL 15 (if not using Docker)
+From the repo root:
+
+```bash
+cd infra
+docker-compose up -d --build
+```
+
+This starts:
+
+- **Postgres** (internal)
+- **Backend** (runs Alembic migrations, then uvicorn; internal)
+- **Frontend** (production build served by nginx on port 80)
+
+**App:** http://localhost  
+No venv, no `npm run dev`, no manual Alembic. Backend is reachable only via the frontend nginx proxy (`/api` → backend).
+
+---
+
+### Local development (optional)
+
+**Prerequisites:** Node.js 18+, npm, Python 3.11+, Docker & Docker Compose (or PostgreSQL 15).
 
 ### 1. Database (Docker)
 
@@ -75,22 +92,7 @@ npm run dev
 App: http://localhost:5173  
 Vite proxy forwards `/api` to `http://localhost:8000`, so leave `VITE_API_BASE_URL` unset for local dev.
 
-### Full stack with Docker (backend + DB)
-
-From repo root:
-
-```bash
-cd infra
-docker-compose up -d
-```
-
-Backend runs on port 8000. Run the frontend locally:
-
-```bash
-cd frontend && npm install && npm run dev
-```
-
-Set `VITE_API_BASE_URL=http://localhost:8000` if you hit the backend from the browser (no proxy). With the Vite proxy (default), leave it unset.
+For local development with hot reload, use the steps below: run Postgres (and optionally backend) in Docker, then run the frontend with `npm run dev` and the backend with uvicorn as needed.
 
 ## API Keys and Fallbacks
 
