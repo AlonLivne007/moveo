@@ -16,6 +16,9 @@ class Settings(BaseSettings):
     OPENROUTER_API_KEY: str = ""
     HUGGINGFACE_API_KEY: str = ""
 
+    # CORS origins (comma-separated list)
+    CORS_ORIGINS: str = ""
+
     class Config:
         env_file = ".env"
         case_sensitive = True
