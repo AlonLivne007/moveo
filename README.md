@@ -25,17 +25,17 @@ From the repo root:
 
 ```bash
 cd infra
-docker-compose up -d --build
+docker compose up -d --build
 ```
 
 This starts:
 
 - **Postgres** (internal)
-- **Backend** (runs Alembic migrations, then uvicorn; internal)
-- **Frontend** (production build served by nginx on port 80)
+- **Backend** (runs Alembic migrations, then uvicorn; internal, exposed on http://localhost:8000)
+- **Frontend** (Vite dev server on http://localhost:5173)
 
-**App:** http://localhost  
-No venv, no `npm run dev`, no manual Alembic. Backend is reachable only via the frontend nginx proxy (`/api` → backend).
+**App:** http://localhost:5173  
+No local venv or `npm run dev` required — Docker Compose runs the dev stack for you.
 
 ---
 

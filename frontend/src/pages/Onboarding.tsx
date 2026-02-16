@@ -1,18 +1,18 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { onboardingService } from '../api/services/onboardingService'
-
+import { useAuth } from '../auth/useAuth'
 const ASSET_OPTIONS = ['Bitcoin', 'Ethereum', 'Solana', 'Cardano', 'Polkadot', 'Avalanche', 'Chainlink', 'Polygon', 'Dogecoin', 'Other']
 const INVESTOR_TYPES = ['HODLer', 'Day Trader', 'NFT Collector', 'Other']
 const CONTENT_TYPES = ['Market News', 'Charts', 'Social', 'Fun']
 
 export function Onboarding() {
+  const { refreshProfile } = useAuth()
   const [assets, setAssets] = useState<string[]>([])
   const [investorType, setInvestorType] = useState('')
   const [contentTypes, setContentTypes] = useState<string[]>([])
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
-  const [voted, setVoted] = useState(false)
   const navigate = useNavigate()
 
   function toggleAsset(a: string) {
@@ -37,8 +37,8 @@ export function Onboarding() {
         assetIds[i] = 'bitcoin'
       }
       await onboardingService.submit(assetIds, investorType, contentTypes.length ? contentTypes : ['Market News', 'Fun'])
-      setVoted(true)
-      setTimeout(() => navigate('/dashboard', { replace: true }), 800)
+      await refreshProfile()
+      navigate('/dashboard', { replace: true })
     } catch {
       setError('Failed to save preferences')
     } finally {
@@ -46,15 +46,6 @@ export function Onboarding() {
     }
   }
 
-  if (voted) {
-    return (
-      <div style={styles.container}>
-        <div style={styles.card}>
-          <p style={styles.thanks}>Thanks for your feedback! Redirecting to dashboard...</p>
-        </div>
-      </div>
-    )
-  }
 
   return (
     <div style={styles.container}>

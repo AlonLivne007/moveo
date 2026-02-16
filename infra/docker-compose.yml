@@ -30,6 +30,8 @@ services:
       CRYPTOPANIC_API_KEY: ""
       OPENROUTER_API_KEY: ""
       HUGGINGFACE_API_KEY: ""
+    ports:
+      - "8000:8000"
     depends_on:
       postgres:
         condition: service_healthy
@@ -41,8 +43,14 @@ services:
       context: ../frontend
       dockerfile: Dockerfile
     container_name: moveo-frontend
+    environment:
+      # Frontend dev server will embed this into the client bundle.
+      VITE_API_BASE_URL: http://localhost:8000
     ports:
-      - "80:80"
+      - "5173:5173"
+    volumes:
+      - ../frontend:/app
+      - /app/node_modules
     depends_on:
       - backend
     networks:

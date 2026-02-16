@@ -1,21 +1,14 @@
-# Stage 1: build
-FROM node:18-alpine AS builder
+FROM node:18-alpine
 
 WORKDIR /app
 
 COPY package.json package-lock.json* ./
 RUN npm install
 
+# Source will be mounted as a volume in docker-compose for hot reload,
+# but we copy once so the image can start even before the volume is attached.
 COPY . .
-# Empty base URL: browser sends requests to same origin; nginx will proxy /api to backend
-ENV VITE_API_BASE_URL=
-RUN npm run build
 
-# Stage 2: serve with nginx
-FROM nginx:alpine
+EXPOSE 5173
 
-COPY --from=builder /app/dist /usr/share/nginx/html
-COPY nginx.conf /etc/nginx/conf.d/default.conf
-
-EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"]
+CMD ["npm", "run", "dev", "--", "--host", "0.0.0.0", "--port", "5173"]
