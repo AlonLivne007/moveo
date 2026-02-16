@@ -12,11 +12,19 @@ export function MarketNewsSection({ items, votes, onVote }: Props) {
   return (
     <SectionCard title="Market News">
       <ul style={styles.list}>
-        {items.map((item) => (
+        {items.map((item) => {
+          const rawLink = item.link ?? item.url
+          const link = typeof rawLink === 'string' ? rawLink.trim() : ''
+          const hasLink = link.length > 0 && (link.startsWith('http://') || link.startsWith('https://'))
+          return (
           <li key={item.id} style={styles.item}>
-            <a href={item.link || '#'} target="_blank" rel="noopener noreferrer" style={styles.link}>
-              {item.title}
-            </a>
+            {hasLink ? (
+              <a href={link} target="_blank" rel="noopener noreferrer" style={styles.link}>
+                {item.title}
+              </a>
+            ) : (
+              <span style={styles.link}>{item.title}</span>
+            )}
             {(item.source || item.published_at) && (
               <span style={styles.meta}>
                 {item.source}
@@ -25,7 +33,8 @@ export function MarketNewsSection({ items, votes, onVote }: Props) {
             )}
             <VoteButtons sectionType="NEWS" contentId={item.id} votes={votes} onVote={onVote} />
           </li>
-        ))}
+          )
+        })}
       </ul>
     </SectionCard>
   )

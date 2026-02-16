@@ -50,38 +50,55 @@ class DashboardService:
         investor_type: str,
         content_types: list[str],
     ) -> None:
-        # News: CryptoPanic or fallback
-        news_raw = await fetch_cryptopanic_news(limit=5)
-        if not news_raw:
+        # News: CryptoPanic or fallback (never let integration failure break the dashboard)
+        try:
+            news_raw = await fetch_cryptopanic_news(limit=5)
+            if not news_raw:
+                news_items = [{"title": n["title"], "source": n["source"], "url": n["url"], "published_at": None} for n in FALLBACK_NEWS]
+            else:
+                news_items = [{"title": n["title"], "source": n.get("source"), "url": n.get("url"), "published_at": n.get("published_at")} for n in news_raw]
+        except Exception:
             news_items = [{"title": n["title"], "source": n["source"], "url": n["url"], "published_at": None} for n in FALLBACK_NEWS]
-        else:
-            news_items = [{"title": n["title"], "source": n.get("source"), "url": n.get("url"), "published_at": n.get("published_at")} for n in news_raw]
         await self.snapshot_repo.add_news_items(snapshot.id, news_items)
 
-        # Prices: CoinGecko
+        # Prices: CoinGecko (fallback to empty so dashboard still loads)
         coin_ids = [a.strip().lower().replace(" ", "-") for a in assets if a][:10]
         if not coin_ids:
             coin_ids = ["bitcoin", "ethereum"]
-        prices_data = await fetch_prices(coin_ids)
-        prices_payload = {
-            "items": [
-                {"id": p["id"], "symbol": p["symbol"], "name": p["name"], "current_price": p["current_price"], "change_24h": p.get("change_24h")}
-                for p in prices_data
-            ]
-        }
+        try:
+            prices_data = await fetch_prices(coin_ids)
+            prices_payload = {
+                "items": [
+                    {"id": p["id"], "symbol": p["symbol"], "name": p["name"], "current_price": p["current_price"], "change_24h": p.get("change_24h")}
+                    for p in prices_data
+                ]
+            }
+        except Exception:
+            prices_payload = {"items": []}
         await self.snapshot_repo.set_prices(snapshot.id, prices_payload)
 
         # AI insight
         headlines = [n["title"] for n in news_items[:5]]
-        text, model_name = await generate_insight(assets or ["crypto"], investor_type, headlines)
-        if not text:
+        try:
+            text, model_name = await generate_insight(assets or ["crypto"], investor_type, headlines)
+            if not text:
+                text = FALLBACK_AI_INSIGHT
+                model_name = "fallback"
+        except Exception:
             text = FALLBACK_AI_INSIGHT
             model_name = "fallback"
         await self.snapshot_repo.set_ai_insight(snapshot.id, text, model_name, {"headlines": headlines})
 
         # Meme
-        meme_data = await fetch_reddit_meme()
-        if not meme_data:
+        try:
+            meme_data = await fetch_reddit_meme()
+            if not meme_data:
+                meme_data = {
+                    "title": FALLBACK_MEME["title"],
+                    "image_url": FALLBACK_MEME["image_url"],
+                    "post_url": FALLBACK_MEME["post_url"],
+                }
+        except Exception:
             meme_data = {
                 "title": FALLBACK_MEME["title"],
                 "image_url": FALLBACK_MEME["image_url"],

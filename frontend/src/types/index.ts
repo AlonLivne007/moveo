@@ -11,6 +11,8 @@ export interface NewsItemPayload {
   source: string | null
   published_at: string | null
   link: string | null
+  /** Optional; API may send link or url depending on backend */
+  url?: string | null
 }
 
 export interface PriceItemPayload {

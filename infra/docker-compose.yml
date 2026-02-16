@@ -1,17 +1,18 @@
 version: "3.8"
 
+# Optional: copy infra/.env.example to infra/.env to override defaults.
 services:
   postgres:
     image: postgres:15-alpine
     container_name: moveo-postgres
     environment:
-      POSTGRES_USER: moveo
-      POSTGRES_PASSWORD: moveo_secret
-      POSTGRES_DB: moveo_crypto
+      POSTGRES_USER: ${POSTGRES_USER:-moveo}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-moveo_secret}
+      POSTGRES_DB: ${POSTGRES_DB:-moveo_crypto}
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U moveo -d moveo_crypto"]
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-moveo} -d ${POSTGRES_DB:-moveo_crypto}"]
       interval: 5s
       timeout: 5s
       retries: 5
@@ -23,13 +24,11 @@ services:
       context: ../backend
       dockerfile: Dockerfile
     container_name: moveo-backend
+    env_file:
+      - ../backend/.env
     environment:
-      DATABASE_URL: postgresql+asyncpg://moveo:moveo_secret@postgres:5432/moveo_crypto
-      JWT_SECRET: your-super-secret-jwt-key-change-in-production
-      JWT_EXPIRES_MINUTES: "1440"
-      CRYPTOPANIC_API_KEY: ""
-      OPENROUTER_API_KEY: ""
-      HUGGINGFACE_API_KEY: ""
+      # Override DATABASE_URL for Docker (host=postgres). Optional: set in infra/.env.
+      DATABASE_URL: ${DATABASE_URL:-postgresql+asyncpg://moveo:moveo_secret@postgres:5432/moveo_crypto}
     ports:
       - "8000:8000"
     depends_on:
@@ -44,8 +43,7 @@ services:
       dockerfile: Dockerfile
     container_name: moveo-frontend
     environment:
-      # Frontend dev server will embed this into the client bundle.
-      VITE_API_BASE_URL: http://localhost:8000
+      VITE_API_BASE_URL: ${VITE_API_BASE_URL:-http://localhost:8000}
     ports:
       - "5173:5173"
     volumes:

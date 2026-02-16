@@ -1,4 +1,4 @@
-from datetime import date
+from datetime import date, datetime
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
@@ -9,6 +9,21 @@ from app.models.snapshot import (
     SnapshotAiInsight,
     SnapshotMeme,
 )
+
+
+def _json_safe_dict(obj: dict) -> dict:
+    """Return a copy safe for JSONB: datetimes as ISO strings."""
+    out = {}
+    for k, v in obj.items():
+        if isinstance(v, datetime):
+            out[k] = v.isoformat()
+        elif isinstance(v, dict):
+            out[k] = _json_safe_dict(v)
+        elif isinstance(v, list):
+            out[k] = [_json_safe_dict(x) if isinstance(x, dict) else x for x in v]
+        else:
+            out[k] = v
+    return out
 
 
 class SnapshotRepository:
@@ -46,7 +61,7 @@ class SnapshotRepository:
                 source=item.get("source"),
                 url=item.get("url"),
                 published_at=item.get("published_at"),
-                raw_json=item,
+                raw_json=_json_safe_dict(item),
             )
             self.db.add(news)
             created.append(news)

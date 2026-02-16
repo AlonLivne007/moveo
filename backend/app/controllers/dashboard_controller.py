@@ -20,7 +20,7 @@ async def get_today_dashboard(current_user: User, db: AsyncSession) -> Dashboard
             title=n.title,
             source=n.source,
             published_at=n.published_at,
-            link=n.url,
+            link=(n.url or None) if (n.url and str(n.url).strip()) else None,
         )
         for n in snapshot.news_items
     ]

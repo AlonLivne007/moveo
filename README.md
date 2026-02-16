@@ -196,4 +196,10 @@ Then open http://localhost:5173 — sign up, complete onboarding, and use the da
 
 ## AI tools usage summary
 
-*(To be filled by the author: summarize any use of ChatGPT, Cursor, GitHub Copilot, or similar tools during the assignment.)*
+**Cursor** was used during development for:
+
+- **Code generation and scaffolding:** FastAPI routers, services, repositories, React components, and API client code.
+- **Refactoring and fixes:** Aligning types and schemas across frontend/backend, fixing integration code (e.g. CryptoPanic v2, OpenRouter/HuggingFace fallbacks), and resolving linter/type errors.
+- **Documentation and config:** README setup instructions, API keys table, folder tree,
+
+AI was used only as an assistant for implementation and documentation.
