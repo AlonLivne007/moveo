@@ -202,10 +202,12 @@ Then open http://localhost:5173 — sign up, complete onboarding, and use the da
 
 ## AI tools usage summary
 
-**Cursor** was used during development for:
+**Cursor** was used for:
 
-- **Code generation and scaffolding:** FastAPI routers, services, repositories, React components, and API client code.
-- **Refactoring and fixes:** Aligning types and schemas across frontend/backend, fixing integration code (e.g. CryptoPanic v2, OpenRouter/HuggingFace fallbacks), and resolving linter/type errors.
-- **Documentation and config:** README setup instructions, API keys table, folder tree,
+- **Architecture and templating:** Shaping the app architecture and scaffolding the codebase according to the designed structure (frontend/backend, routers, services, repositories).
+- **Debugging and fixing errors:** Tracking down and fixing bugs, integration issues (e.g. CryptoPanic, CoinGecko, OpenRouter), and linter/type errors.
+- **Code reviews:** Reviewing code and suggesting improvements.
 
-AI was used only as an assistant for implementation and documentation.
+**ChatGPT** was used for:
+
+- **Prompts:** Writing clearer, more accurate and informative prompts to improve the quality of AI-generated content (e.g. for the dashboard insight).
