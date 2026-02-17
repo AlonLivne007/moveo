@@ -1,3 +1,4 @@
+import type { CSSProperties } from 'react'
 import type { AiInsightPayload, VoteResponse } from '../../types'
 import { SectionCard } from './SectionCard'
 import { VoteButtons } from './VoteButtons'
@@ -25,7 +26,7 @@ export function AiInsightSection({ insight, votes, onVote }: Props) {
   )
 }
 
-const styles: Record<string, React.CSSProperties> = {
+const styles: Record<string, CSSProperties> = {
   text: { margin: '0 0 8px', color: '#e2e8f0', lineHeight: 1.6 },
   model: { fontSize: 12, color: '#64748b' },
   empty: { color: '#64748b', margin: 0 },
