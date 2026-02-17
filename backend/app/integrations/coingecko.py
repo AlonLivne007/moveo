@@ -1,6 +1,11 @@
 import httpx
 
 COINGECKO_BASE = "https://api.coingecko.com/api/v3"
+# CoinGecko can block server requests (e.g. from Render) when User-Agent looks like a bot. Use a browser-like one.
+COINGECKO_HEADERS = {
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+    "Accept": "application/json",
+}
 
 
 async def fetch_prices(coin_ids: list[str]) -> list[dict]:
@@ -13,6 +18,7 @@ async def fetch_prices(coin_ids: list[str]) -> list[dict]:
             r = await client.get(
                 f"{COINGECKO_BASE}/coins/markets",
                 params={"vs_currency": "usd", "ids": ids, "order": "market_cap_desc"},
+                headers=COINGECKO_HEADERS,
             )
             r.raise_for_status()
             data = r.json()

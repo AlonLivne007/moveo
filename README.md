@@ -2,6 +2,12 @@
 
 A personalized crypto investor dashboard. Users sign up, complete a short onboarding quiz, and see a daily dashboard with AI-curated content (market news, coin prices, AI insight, meme). Each section supports thumbs up/down feedback stored in the database.
 
+## Live Demo
+
+- **Frontend (Vercel):** https://ai-crypto-advisor-tawny.vercel.app
+- **Backend (Render):** https://ai-crypto-advisor-backend-eu2.onrender.com
+- **API Docs:** https://ai-crypto-advisor-backend-eu2.onrender.com/docs
+
 ## Tech Stack
 
 - **Frontend:** React + Vite (TypeScript), React Context + custom hooks, Axios
