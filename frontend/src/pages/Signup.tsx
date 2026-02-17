@@ -1,8 +1,8 @@
-import { useState, type FormEvent, type CSSProperties } from 'react'
+import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../auth/useAuth'
 
-const formStyles: Record<string, CSSProperties> = {
+const formStyles: Record<string, React.CSSProperties> = {
   container: { minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#0f172a', padding: 16 },
   card: { background: '#1e293b', borderRadius: 12, padding: 32, width: '100%', maxWidth: 400, boxShadow: '0 4px 20px rgba(0,0,0,0.3)' },
   title: { margin: '0 0 8px', color: '#f8fafc', fontSize: 24 },
@@ -23,7 +23,7 @@ export function Signup() {
   const { signup } = useAuth()
   const navigate = useNavigate()
 
-  async function handleSubmit(e: FormEvent) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     setError('')
     setLoading(true)

@@ -1,4 +1,3 @@
-import type { CSSProperties } from 'react'
 import type { PricesPayload, VoteResponse } from '../../types'
 import { SectionCard } from './SectionCard'
 import { VoteButtons } from './VoteButtons'
@@ -38,7 +37,7 @@ export function PricesSection({ prices, votes, onVote }: Props) {
   )
 }
 
-const styles: Record<string, CSSProperties> = {
+const styles: Record<string, React.CSSProperties> = {
   list: { listStyle: 'none', margin: 0, padding: 0 },
   row: { display: 'flex', alignItems: 'center', gap: 12, padding: '8px 0', borderBottom: '1px solid #334155', flexWrap: 'wrap' },
   symbol: { fontWeight: 600, minWidth: 60 },

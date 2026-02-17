@@ -13,7 +13,7 @@ origins = [
 ]
 
 # Allow extra origins from env (comma-separated)
-if settings.CORS_ORIGINS:
+if getattr(settings, "CORS_ORIGINS", None):
     origins.extend([o.strip() for o in settings.CORS_ORIGINS.split(",") if o.strip()])
 
 app.add_middleware(

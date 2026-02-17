@@ -1,4 +1,3 @@
-import type { CSSProperties } from 'react'
 import type { MemePayload, VoteResponse } from '../../types'
 import { SectionCard } from './SectionCard'
 import { VoteButtons } from './VoteButtons'
@@ -28,7 +27,7 @@ export function MemeSection({ meme, votes, onVote }: Props) {
   )
 }
 
-const styles: Record<string, CSSProperties> = {
+const styles: Record<string, React.CSSProperties> = {
   title: { margin: '0 0 12px', color: '#e2e8f0', fontSize: 15 },
   imgWrap: { display: 'block', marginBottom: 8 },
   img: { maxWidth: '100%', borderRadius: 8, border: '1px solid #334155' },

@@ -1,4 +1,4 @@
-import { useEffect, useState, type CSSProperties } from 'react'
+import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../auth/useAuth'
 import { dashboardService } from '../api/services/dashboardService'
@@ -90,7 +90,7 @@ export function Dashboard() {
   )
 }
 
-const styles: Record<string, CSSProperties> = {
+const styles: Record<string, React.CSSProperties> = {
   wrapper: { minHeight: '100vh', background: '#0f172a', color: '#f8fafc' },
   header: { display: 'flex', alignItems: 'center', gap: 16, padding: '16px 24px', borderBottom: '1px solid #334155', background: '#1e293b' },
   logo: { fontSize: 20, fontWeight: 700 },

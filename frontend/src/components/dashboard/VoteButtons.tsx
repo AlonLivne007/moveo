@@ -1,4 +1,3 @@
-import type { CSSProperties } from 'react'
 import type { VoteResponse } from '../../types'
 
 type SectionType = 'NEWS' | 'PRICES' | 'AI_INSIGHT' | 'MEME'
@@ -38,7 +37,7 @@ export function VoteButtons({ sectionType, contentId, votes, onVote, voted }: Vo
   )
 }
 
-const styles: Record<string, CSSProperties> = {
+const styles: Record<string, React.CSSProperties> = {
   wrapper: { display: 'flex', alignItems: 'center', gap: 8, marginTop: 12 },
   btn: { padding: '6px 12px', borderRadius: 8, border: '1px solid #475569', background: '#0f172a', cursor: 'pointer', fontSize: 16 },
   btnActive: { background: '#334155', borderColor: '#64748b' },

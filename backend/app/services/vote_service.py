@@ -16,6 +16,7 @@ class VoteService:
         return await self.vote_repo.upsert(user.id, section_type, content_id, vote_value)
 
     async def get_votes_for_today(self, user: User):
+        from datetime import date
         snapshot = await self.snapshot_repo.get_today_for_user(user.id)
         if not snapshot:
             return []

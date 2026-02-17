@@ -53,13 +53,12 @@ class DashboardService:
         # News: CryptoPanic or fallback (never let integration failure break the dashboard)
         try:
             news_raw = await fetch_cryptopanic_news(limit=5)
-            raw_list = news_raw if news_raw else FALLBACK_NEWS
+            if not news_raw:
+                news_items = [{"title": n["title"], "source": n["source"], "url": n["url"], "published_at": None} for n in FALLBACK_NEWS]
+            else:
+                news_items = [{"title": n["title"], "source": n.get("source"), "url": n.get("url"), "published_at": n.get("published_at")} for n in news_raw]
         except Exception:
-            raw_list = FALLBACK_NEWS
-        news_items = [
-            {"title": (n.get("title") or "No title"), "source": n.get("source"), "url": n.get("url"), "published_at": n.get("published_at")}
-            for n in raw_list[:5]
-        ]
+            news_items = [{"title": n["title"], "source": n["source"], "url": n["url"], "published_at": None} for n in FALLBACK_NEWS]
         await self.snapshot_repo.add_news_items(snapshot.id, news_items)
 
         # Prices: CoinGecko (fallback to empty so dashboard still loads)
@@ -93,9 +92,13 @@ class DashboardService:
         # Meme
         try:
             meme_data = await fetch_reddit_meme()
+            if not meme_data:
+                meme_data = {
+                    "title": FALLBACK_MEME["title"],
+                    "image_url": FALLBACK_MEME["image_url"],
+                    "post_url": FALLBACK_MEME["post_url"],
+                }
         except Exception:
-            meme_data = None
-        if not meme_data:
             meme_data = {
                 "title": FALLBACK_MEME["title"],
                 "image_url": FALLBACK_MEME["image_url"],
