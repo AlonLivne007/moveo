@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, type FormEvent, type CSSProperties } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { onboardingService } from '../api/services/onboardingService'
 import { useAuth } from '../auth/useAuth'
@@ -22,7 +22,7 @@ export function Onboarding() {
     setContentTypes((prev) => (prev.includes(c) ? prev.filter((x) => x !== c) : [...prev, c]))
   }
 
-  async function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: FormEvent) {
     e.preventDefault()
     if (!investorType) {
       setError('Please select an investor type')
@@ -100,7 +100,7 @@ export function Onboarding() {
   )
 }
 
-const styles: Record<string, React.CSSProperties> = {
+const styles: Record<string, CSSProperties> = {
   container: { minHeight: '100vh', background: '#0f172a', padding: 24 },
   card: { maxWidth: 560, margin: '0 auto', background: '#1e293b', borderRadius: 12, padding: 32, boxShadow: '0 4px 20px rgba(0,0,0,0.3)' },
   title: { margin: '0 0 24px', color: '#f8fafc', fontSize: 22 },
@@ -112,5 +112,4 @@ const styles: Record<string, React.CSSProperties> = {
   chipActive: { background: '#3b82f6', color: 'white', borderColor: '#3b82f6' },
   select: { padding: '12px 16px', borderRadius: 8, border: '1px solid #334155', background: '#0f172a', color: '#f8fafc', fontSize: 16 },
   button: { padding: 12, borderRadius: 8, border: 'none', background: '#3b82f6', color: 'white', fontSize: 16, cursor: 'pointer', fontWeight: 600, marginTop: 8 },
-  thanks: { color: '#86efac', margin: 0, fontSize: 16 },
 }

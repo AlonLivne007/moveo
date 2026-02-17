@@ -1,4 +1,4 @@
-import React, { createContext, useCallback, useEffect, useState } from 'react'
+import { createContext, useCallback, useEffect, useState, type ReactNode } from 'react'
 import { authService } from '../api/services/authService'
 import type { UserProfile } from '../types'
 
@@ -17,7 +17,7 @@ interface AuthContextValue extends AuthState {
 
 export const AuthContext = createContext<AuthContextValue | null>(null)
 
-export function AuthProvider({ children }: { children: React.ReactNode }) {
+export function AuthProvider({ children }: { children: ReactNode }) {
   const [state, setState] = useState<AuthState>({ user: null, loading: true, checked: false })
 
   const refreshProfile = useCallback(async () => {

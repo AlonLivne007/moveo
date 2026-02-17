@@ -1,3 +1,4 @@
+import type { CSSProperties } from 'react'
 import type { NewsItemPayload, VoteResponse } from '../../types'
 import { SectionCard } from './SectionCard'
 import { VoteButtons } from './VoteButtons'
@@ -40,7 +41,7 @@ export function MarketNewsSection({ items, votes, onVote }: Props) {
   )
 }
 
-const styles: Record<string, React.CSSProperties> = {
+const styles: Record<string, CSSProperties> = {
   list: { listStyle: 'none', margin: 0, padding: 0 },
   item: { paddingBottom: 16, marginBottom: 16, borderBottom: '1px solid #334155' },
   link: { color: '#60a5fa', textDecoration: 'none', fontSize: 15 },

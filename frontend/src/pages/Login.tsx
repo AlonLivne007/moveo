@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, type FormEvent, type CSSProperties } from 'react'
 import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { useAuth } from '../auth/useAuth'
 
@@ -12,7 +12,7 @@ export function Login() {
   const location = useLocation()
   const from = (location.state as { from?: { pathname: string } })?.from?.pathname || '/dashboard'
 
-  async function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: FormEvent) {
     e.preventDefault()
     setError('')
     setLoading(true)
@@ -63,7 +63,7 @@ export function Login() {
   )
 }
 
-const styles: Record<string, React.CSSProperties> = {
+const styles: Record<string, CSSProperties> = {
   container: { minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#0f172a', padding: 16 },
   card: { background: '#1e293b', borderRadius: 12, padding: 32, width: '100%', maxWidth: 400, boxShadow: '0 4px 20px rgba(0,0,0,0.3)' },
   title: { margin: '0 0 8px', color: '#f8fafc', fontSize: 24 },

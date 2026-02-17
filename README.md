@@ -138,7 +138,6 @@ Configure in backend `.env`:
 
 ## Bonus: Using Feedback for Future Model Improvements
 
-*(No implementation; suggestion only.)*
 
 - **Labels:** Store thumbs up/down as binary (or ordinal) labels per (user, section_type, content_id, snapshot_date).
 - **Features:** Use user preferences (assets, investor_type, content_types), content metadata (source, asset ids), and optionally content embeddings (e.g. from a small encoder) as features.
